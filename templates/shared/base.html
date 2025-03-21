@@ -28,17 +28,17 @@
        <div class="collapse navbar-collapse" id="navbarResponsive">
          <ul class="navbar-nav ms-auto">
            <!-- Navbar links omitted for brevity -->
-           <li class="nav-item nav-link"><a class="nav-link active" href="">Register</a></li>
-                   <li class="nav-item nav-link"><a class="nav-link" href="{% url 'identity:login' %}">Login</a></li>
+           {% comment %} <li class="nav-item nav-link"><a class="nav-link active" href="">Register</a></li> {% endcomment %}
+                   <li class="nav-item nav-link"><a class="nav-link" href="{% url 'identity:login' %}">Login  <i class="fa fa-sign-in-alt text-success"></i></a></li> 
                    <li class="nav-item nav-link"></li>
            <li class="nav-item nav-link">
              <form action="" method="post">
                {% csrf_token %}
-               <div class="dropdown">
+               {% comment %} <div class="dropdown">
                  <button class="nav-link dropdown-toggle" type="button" id="languageDropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="
                  background-color: transparent;
                  border: none;
-             ">
+             "> {% endcomment %}
                    {% comment %} {% get_language_info for request.LANGUAGE_CODE as current_language_info %} {% endcomment %}
                    <img src="{% static 'flags/' %}{{ request.LANGUAGE_CODE }}.png" alt="{{ request.LANGUAGE_CODE }}" style="height:16px">
                  </button>
