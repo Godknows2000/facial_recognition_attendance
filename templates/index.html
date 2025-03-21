@@ -1,0 +1,5 @@
+{% if user.is_authenticated %}
+     {% include 'shared/authenticated_user.html' %}
+ {% else %}
+     {% include 'shared/unauthenticated_content.html' %}
+ {% endif %}

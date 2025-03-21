@@ -5,6 +5,8 @@ from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 
+from base.views import index_view
+
 from identity.forms import LoginForm
 
 def login_view(request):
