@@ -31,7 +31,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'attendance',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -39,6 +38,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     
     'django.contrib.staticfiles',
+    'identity',
+    'base',
+    'attendance',
+    'attendance_logs',
+    'notifications',
+    'students',
+    'core',
+    'departments',
+    'staff',
+    'classroom'
 ]
 
 MIDDLEWARE = [
@@ -91,7 +100,7 @@ DATABASES = {
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
 
-AUTH_USER_MODEL = 'attendance.User'
+# AUTH_USER_MODEL = 'attendance.User'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
