@@ -1,0 +1,90 @@
+{% extends 'shared/core.html' %} {% load static %} {% block content %}
+<!-- Start: Login Form Basic -->
+<section
+  id="identity"
+  class="py-4 py-xl-5"
+  style="background-image: url('{% static 'img/tollgate-bg.jpg' %}')"
+>
+  <div class="container">
+    <div class="text-center pt-3 px-4">
+      <h2 class="pt-5 text-white">TOLLGATE COLLECTION SYSTEM</h2>
+      <h3 class="text-white">Seamless payments, smart travel.</h3>
+    </div>
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <h3 class="text-center text-white">Login</h3>
+          <a
+            class="btn btn-outline-primary mb-4 w-100"
+            href="{% url 'identity:zrp_traffic_login' %}"
+          >
+            <i class="bi-person-workspace"></i> ZRP Traffic login
+          </a>
+          <div class="card">
+            <div class="card-body">
+              <h4 class="text-center">Administration login</h4>
+              <input
+                type="text"
+                class="form-control{% if form.username.errors %} is-invalid{% endif %}"
+                placeholder="Username"
+                name="username"
+                value="{{ form.username.value|default_if_none:'' }}"
+                required
+              />
+              {% if form.username.errors %}
+              <div class="invalid-feedback">{{ form.username.errors }}</div>
+              {% endif %}
+              <input
+                type="password"
+                name="password"
+                class="form-control my-2{% if form.password.errors %} is-invalid{% endif %}"
+                placeholder="Password"
+                required
+              />
+              {% if form.password.errors %}
+              <div class="invalid-feedback">{{ form.password.errors }}</div>
+              {% endif %}
+              <div class="checkbox">
+                <label for="Input_RememberMe">
+                  <input
+                    type="checkbox"
+                    data-val="true"
+                    data-val-required="The Keep me signed in field is required."
+                    id="Input_RememberMe"
+                    name="Input.RememberMe"
+                    value="true"
+                  />
+                  Remember me
+                </label>
+              </div>
+              {% if messages %}
+              <div class="text-danger mt-2" id="loginError">
+                {% for message in messages %}
+                <p>{{ message }}</p>
+                {% endfor %}
+              </div>
+              {% endif %}
+            </div>
+            <div class="card-footer text-end">
+              <button
+                class="btn btn-outline-primary"
+                style="background: #2c3d90; color: #fff"
+              >
+                <i class="bi-box-arrow-in-left"></i>
+                <i class="fa fa-right"></i> Login
+              </button>
+            </div>
+          </div>
+          <div class="text-center">
+            <div class="mt-2 mb-2">
+              <a href="/ForgotPassword">Forgot your password?</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</section>
+<!-- End: Login Form Basic -->
+{% endblock %}
