@@ -1,0 +1,18 @@
+<div class="px-2 py-4">
+    <a class=" text-dark h4 text-truncate mb-0" style="text-decoration:none; display: block" title="Manage"><i class="fa fa-user-circle"></i> Administrator</a>
+    <div class="text-muted" style="padding-left:32px">{{user_account.account}}</div>
+</div>
+<ul class="list-unstyled" style="margin-top:0px; color:#2C3D90">
+    <li><a href="/"><i class="fa fa-home text-muted"></i> Dashboard</a></li>  
+    <li><a href="/vehicle/"><i class="fa fa-users text-muted"></i> Departments</a></li>   
+    <li><a href="/accounts/"><i class="fa fa-folder-open text-muted"></i> Students</a></li>
+    <li><a href="/accounts/"><i class="fa fa-folder-open text-muted"></i> Staff</a></li>
+    <li><a href="/accounts/"><i class="fa fa-folder-open text-muted"></i> Locations</a></li>
+    <li><a href="/accounts/"><i class="fa fa-folder-open text-muted"></i> Attendance</a></li>
+    <li><a href="/accounts/"><i class="fa fa-folder-open text-muted"></i> Attendance Logs</a></li>
+    <li><a href="/notifications/"><i class="fa fa-calendar text-muted"></i> Notifications</a></li>
+    <li><a href="/users/"><i class="fa fa-users text-muted" aria-hidden="true"></i> Users</a></li>
+    {% comment %} <li><a href="/whatsapp_settings/"><i class="fa fa-cogs text-muted" aria-hidden="true"></i> WhatsApp</a></li> {% endcomment %}
+
+    <a href="/recognition/scan" class="btn btn-success ms-2 mt-4" target="_blank"><i class="fa fa-camera-cctv"></i>Launch Facial Recognition</a>
+</ul>
