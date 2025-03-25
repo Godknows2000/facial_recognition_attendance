@@ -1,0 +1,19 @@
+{% extends 'shared/layout_core.html' %}
+
+{% block breadcrumb %}
+    <a class="breadcrumb-item" href="{% url 'students:index' %}">Students</a>
+    <a class="breadcrumb-item active" href="#">Student details</a>
+{% endblock %}
+
+{% block actionbar %}
+    <a class="btn btn-outline-primary" href="{% url 'students:add' %}"><i class="fa fa-plus"></i> Add new</a>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <h3>{{ student.user.first_name }} {{ student.user.last_name }}</h3>
+        <p><strong>Registration Number:</strong> {{ student.reg_number }}</p>
+        <p><strong>Department:</strong> {{ student.department }}</p>
+        <p><strong>Created At:</strong> {{ student.created_at }}</p>
+    </div>
+{% endblock %}

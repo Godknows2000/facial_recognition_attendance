@@ -1,0 +1,56 @@
+{% extends 'shared/layout_core.html' %}
+
+{% block breadcrumb %}
+    <a class="breadcrumb-item" href="{% url 'students:index' %}">Students</a>
+{% endblock %}
+
+{% block actionbar %}
+    <a class="btn btn-outline-primary" href="{% url 'students:add' %}"><i class="fa fa-plus"></i> Add new</a>
+{% endblock %}
+
+{% block main %}
+    <div class="row">
+        <div class="col-md-8"></div>
+        <div class="col-md-4 text-right">
+            <form method="GET" action="">
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" name="query_string" placeholder="Search for student...">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i> Search</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    {% if query_string %}
+    <div class="row">
+        <p><i class="fa fa-search"></i> You searched for "<b>{{ query_string }}</b>"
+            <a href="{% url 'students:index' %}" class="btn btn-outline-secondary btn-sm">Clear search</a>
+        </p>
+    </div>
+    {% endif %}
+
+    <h5 class="font-weight-light"><strong>{{ my_list.count }}</strong> Student{% if my_list.count != 1 %}s{% endif %}</h5>
+
+    <table class="table table-striped table-hover table-sm border-bottom border-top">
+        <thead>
+            <tr>
+                <th>Full Name</th>
+                <th>Registration Number</th>
+                <th>Department</th>
+                <th>Creation Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for student in my_list %}
+                <tr>
+                    <td><a href="{% url 'students:details' student.id %}">{{ student.user.first_name }} {{ student.user.last_name }}</a></td>
+                    <td>{{ student.reg_number }}</td>
+                    <td>{{ student.department }}</td>
+                    <td>{{ student.created_at }}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
