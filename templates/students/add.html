@@ -6,10 +6,67 @@
 {% endblock %}
 
 {% block main %}
-    <h3>Add new Student</h3>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit" class="btn btn-primary">Save</button>
-    </form>
+    <div class="row">
+        <div class="col-md-9">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="card">
+                    <div class="card-body">
+                        <h3>Add new Student</h3>
+
+                        <!-- Full Name -->
+                        <div class="mb-4 row">
+                            <label class="col-md-4">Full Name <span class="text-danger">*</span></label>
+                            <div class="col-md-8">
+                                {{ form.user.first_name }}
+                                {{ form.user.last_name }}
+                            </div>
+                        </div>
+
+                        <!-- Registration Number -->
+                        <div class="mb-4 row">
+                            <label class="col-md-4">Registration Number <span class="text-danger">*</span></label>
+                            <div class="col-md-8">
+                                {{ form.reg_number }}
+                            </div>
+                        </div>
+
+                        <!-- Department -->
+                        <div class="mb-4 row">
+                            <label class="col-md-4">Department <span class="text-danger">*</span></label>
+                            <div class="col-md-8">
+                                {{ form.department }}
+                            </div>
+                        </div>
+
+                        <!-- Face Encoding (Non-editable) -->
+                        <div class="mb-4 row">
+                            <label class="col-md-4">Face Encoding (not editable)</label>
+                            <div class="col-md-8">
+                                {{ form.face_encoding }} <!-- This will be hidden or auto-handled -->
+                            </div>
+                        </div>
+
+                        {% if form.errors %}
+                            <div class="alert alert-danger" role="alert">
+                                Please correct the errors below:
+                                <ul>
+                                    {% for field, errors in form.errors.items %}
+                                        {% for error in errors %}
+                                            <li>{{ error }}</li>
+                                        {% endfor %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                    <div class="card-footer text-end">
+                        <button type="submit" class="btn btn-success">
+                            <i class="fa fa-save"></i> Save
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
 {% endblock %}
