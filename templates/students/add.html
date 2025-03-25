@@ -1,0 +1,15 @@
+{% extends 'shared/layout_core.html' %}
+
+{% block breadcrumb %}
+    <a class="breadcrumb-item" href="{% url 'students:index' %}">Students</a>
+    <a class="breadcrumb-item active" href="#">Add new student</a>
+{% endblock %}
+
+{% block main %}
+    <h3>Add new Student</h3>
+    <form method="POST">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+{% endblock %}
