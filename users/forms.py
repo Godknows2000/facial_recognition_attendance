@@ -15,4 +15,4 @@ class UserForm(forms.ModelForm):
         self.fields['password'].widget.attrs['class'] = 'form-control'
         self.fields['email'].widget.attrs['class'] = 'form-control'
         self.fields['date_joined'].widget.attrs['class'] = 'form-control'
-        self.fields['is_student'].widget.attrs['class'] = 'form-control'
+        self.fields['is_staff'].widget.attrs['class'] = 'form-control'

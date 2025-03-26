@@ -1,17 +1,50 @@
+<style>
+    .sidebar-link {
+        color: #007bff !important;
+        text-decoration: none;
+        display: block;
+        padding: 8px 15px;
+    }
+    
+    .sidebar-link:hover {
+        color: #0056b3 !important; /* Darker blue on hover */
+    }
+    
+    .sidebar-link.active {
+        color: #ffffff !important;
+        background-color: #2c3d90 !important;
+    }
+</style>
+
 <div class="px-2 py-4">
-    <a class=" text-dark h4 text-truncate mb-0" style="text-decoration:none; display: block" title="Manage"><i class="fa fa-user-circle"></i> Administrator</a>
+    <a class=" text-dark h4 text-truncate mb-0" style="text-decoration:none; display: block" title="Manage">
+        <i class="fa fa-user-circle"></i> Administrator
+    </a>
     <div class="text-muted" style="padding-left:32px">{{user_account.account}}</div>
 </div>
-<ul class="list-unstyled" style="margin-top:0px; color:#2C3D90">
-    <li><a href="/"><i class="fa fa-home text-muted"></i> Dashboard</a></li>  
-    <li><a href="/departments/"><i class="fa fa-users text-muted"></i> Departments</a></li>   
-    <li><a href="/students/"><i class="fa fa-users text-muted"></i> Students</a></li>
-    <li><a href="/staff/"><i class="fa fa-user text-muted"></i> Staff</a></li>
-    <li><a href="/locations/"><i class="fa fa-map-marker text-muted"></i> Locations</a></li>
-    <li><a href="/attendance/"><i class="fa fa-check-square text-muted"></i> Attendance</a></li>
-    <li><a href="/attendance_logs/"><i class="fa fa-folder-open text-muted"></i> Attendance Logs</a></li>
-    <li><a href="/notifications/"><i class="fa fa-bell text-muted"></i> Notifications</a></li>
-    <li><a href="/users/"><i class="fa fa-users text-muted" aria-hidden="true"></i> Users</a></li>
+<ul class="list-unstyled" style="margin-top:0px;">
+    <li><a href="/" class="sidebar-link"><i class="fa fa-home text-muted"></i> Dashboard</a></li>  
+    <li><a href="/departments/" class="sidebar-link"><i class="fa fa-users text-muted"></i> Departments</a></li>   
+    <li><a href="/students/" class="sidebar-link"><i class="fa fa-users text-muted"></i> Students</a></li>
+    <li><a href="/staff/" class="sidebar-link"><i class="fa fa-user text-muted"></i> Staff</a></li>
+    <li><a href="/locations/" class="sidebar-link"><i class="fa fa-map-marker text-muted"></i> Locations</a></li>
+    <li><a href="/attendance/" class="sidebar-link"><i class="fa fa-check-square text-muted"></i> Attendance</a></li>
+    <li><a href="/attendance_logs/" class="sidebar-link"><i class="fa fa-folder-open text-muted"></i> Attendance Logs</a></li>
+    <li><a href="/notifications/" class="sidebar-link"><i class="fa fa-bell text-muted"></i> Notifications</a></li>
+    <li><a href="/users/" class="sidebar-link"><i class="fa fa-users text-muted"></i> Users</a></li>
 
     <a href="/recognition/scan" class="btn btn-success ms-2 mt-4" target="_blank"><i class="fa fa-video-camera"></i> Launch Facial Recognition</a>
 </ul>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        var currentLocation = window.location.pathname;
+        var links = document.querySelectorAll(".sidebar-link");
+
+        links.forEach(function (link) {
+            if (link.getAttribute("href") === currentLocation) {
+                link.classList.add("active"); // Add the active class
+            }
+        });
+    });
+</script>

@@ -38,7 +38,7 @@ def add_view(request):
         if form.is_valid():
             cleaned_data = form.cleaned_data
             user = User.objects.create_user(username=cleaned_data['username'],date_joined= cleaned_data['date_joined'],password=cleaned_data['password'], email=cleaned_data['email'])
-            user.is_police = cleaned_data['is_police']
+            user.is_student = cleaned_data['is_staff']
             user.save()
             
             return redirect(details_view, id=user.id)

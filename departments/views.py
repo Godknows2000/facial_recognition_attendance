@@ -1,45 +1,80 @@
-from django.shortcuts import render, get_object_or_404
-from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
+from django.shortcuts import render, redirect
+from django.contrib.auth.decorators import login_required
+
 from base.models import Department
-from .forms import DepartmentForm
 
-# ✅ List all departments
-class DepartmentListView(ListView):
-    model = Department
-    template_name = 'departments/index.html'
-    context_object_name = 'my_list'
+from departments.forms import DepartmentForm
+from base.section import Section
+section = Section()
+section.actionbar = True
+section.breadcrumb = True
 
-    def get_queryset(self):
-        query_string = self.request.GET.get('query_string', '')
-        if query_string:
-            return Department.objects.filter(name__icontains=query_string)
-        return Department.objects.all()
+def index_view(request):
+    
+    section.page_title = "Departments"
+    section.sidebar=False
+    section.actionbar = True
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['query_string'] = self.request.GET.get('query_string', '')
-        return context
+    my_list = Department.objects.all().order_by('created_at')
+    
+    context = {
+        'section': section,
+        'query_string': "",
+        'my_list': my_list,
+        'user': request.user,
+        
+    }
+    
+    return render(request, 'departments/index.html', context)
 
+def add_view(request):
+    section.page_title = "Add new department"
+    section.sidebar = False
+    
+    form = DepartmentForm
+    
+    if request.method == 'POST':
+        
+        form = DepartmentForm(request.POST)
 
-# ✅ Department details page
-class DepartmentDetailView(DetailView):
-    model = Department
-    template_name = 'departments/details.html'
-    context_object_name = 'department'
+        print("test")
+        if form.is_valid():
+            print('test')
+            
+            department = form.save(commit=False)
+            department.save()
+            
+            return redirect(details_view, id=department.id)
+        else:
+            form = DepartmentForm()  # Instantiate the form here
+    context = {
+        'section': section,
+        'query_string': "",
+        'form': form,
+        'user': request.user,
+    }
+    
+    return render(request, 'departments/add.html', context)
 
+def details_view(request, id):
+    department = Department.objects.get(id = id)
+    section.page_title = department.name
+    section.sidebar = True
+    section.actionbar = True
+    
+    # Count the total number of vehicles associated with the ministry
+    # total_students = Vehicle.objects.filter(ministry_name=id).count()
+    
+    # # Retrieve the list of vehicles associated with the ministry
+    # student_list = Vehicle.objects.filter(ministry_name=id)
 
-# ✅ Create a new department
-class DepartmentCreateView(CreateView):
-    model = Department
-    form_class = DepartmentForm
-    template_name = 'departments/add.html'
-    success_url = reverse_lazy('departments:index')
-
-
-# ✅ Update department details
-class DepartmentUpdateView(UpdateView):
-    model = Department
-    form_class = DepartmentForm
-    template_name = 'departments/add.html'  # Reuse the add.html for editing
-    success_url = reverse_lazy('departments:index')
+    context = {
+        'section': section,
+        'query_string': "",
+        'department': department,
+        # 'total_vehicles': total_vehicles, 
+        # 'vehicle_list': vehicle_list,    
+        'user': request.user,
+        
+    }
+    return render(request, 'departments/details.html', context)

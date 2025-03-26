@@ -1,22 +1,41 @@
-{% extends 'shared/layout_core.html' %}
+{% extends 'shared/layout_core.html' %} {% load static %} {% block breadcrumb %}
+<a class="breadcrumb-item" href="/departments/">Departments</a>
+<a class="breadcrumb-item" href="#">{{form.id}}</a>
+{% endblock %} {% block sidebar %}
 
-{% block breadcrumb %} 
-    <a class="breadcrumb-item" href="{% url 'departments:index' %}">Students Departments</a>
-    <span class="breadcrumb-item active">{{ department.name }}</span>
-{% endblock %}
+<div class="list-group list-group-flush border-bottom scrollarea w-100">
+  <a
+    class="list-group-item list-group-item-light justify-content-between d-flex align-items-center list-group-item-action border-bottom"
+    href="../department/{{form.id}}"
+  >
+    <div>Students</div>
+    <i class="fa fa-money-bill-alt"></i>
+  </a>
+  <a
+    class="list-group-item list-group-item-light justify-content-between d-flex align-items-center list-group-item-action border-bottom"
+    href="../department/{{department.id}}"
+  >
+    <div>Add student</div>
+    <i class="fa fa-money-bill-alt"></i>
+  </a>
+</div>
 
-{% block actionbar %} 
-    <a class="btn btn-outline-secondary" href="{% url 'departments:edit' department.id %}"><i class="fa fa-edit"></i> Edit</a>
-{% endblock %}
-
-{% block main %} 
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">{{ department.name }}</h5>
-        </div>
-        <div class="card-body">
-            <p><strong>Code:</strong> {{ department.code }}</p>
-            <p><strong>Created At:</strong> {{ department.created_at }}</p>
-        </div>
+{% endblock %} {% block main_s %}
+<div class="card">
+  <div class="card-body">
+    <h5>Department information</h5>
+    <hr />
+    <div class="mb-4 row">
+      <label class="col-md-4">Name</label>
+      <div class="col-md-8">{{department.name}}</div>
     </div>
-{% endblock %}
+    <div class="mb-4 row">
+      <label class="col-md-4">Dept code</label>
+      <div class="col-md-8">{{department.code}}</div>
+    </div>
+    <div class="mb-4 row">
+      <label class="col-md-4">Creation Date</label>
+      <div class="col-md-8">{{department.created_at}}</div>
+    </div>
+  </div>
+</div>

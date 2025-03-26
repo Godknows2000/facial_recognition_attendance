@@ -22,5 +22,6 @@ urlpatterns = [
     path('', include('base.urls')),
     path('identity/', include('identity.urls')),
     path('departments/', include('departments.urls')),
-    path('students/', include('students.urls'))
+    path('students/', include('students.urls')),
+    path('users/', include('users.urls')),
 ]

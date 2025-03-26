@@ -1,12 +1,12 @@
 from django import forms
-from base.models import Department
+from base.models import *
 
 class DepartmentForm(forms.ModelForm):
     class Meta:
         model = Department
         fields = '__all__'
-        exclude = ['id', 'created_at']
-
+        exclude = ['id', 'creation_date']
+        
     def __init__(self, *args, **kwargs):
         super(DepartmentForm, self).__init__(*args, **kwargs)
         self.fields['name'].widget.attrs['class'] = 'form-control'
