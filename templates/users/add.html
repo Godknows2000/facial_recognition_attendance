@@ -1,0 +1,60 @@
+<!-- add.html -->
+{% extends 'shared/layout_core.html' %} {% load static %} {% block breadcrumb %}
+<a class="breadcrumb-item" href="{% url 'index' %}">Users</a>
+<span class="breadcrumb-item active">Add</span>
+{% endblock %} {% block main %}
+<div class="row">
+  <div class="col-md-9">
+    <form method="post" enctype="multipart/form-data" id="addUserForm">
+      {% csrf_token %}
+      <div class="card">
+        <div class="card-body">
+          <div class="mb-4 row">
+            <label class="col-md-4">Username</label>
+            <div class="col-md-8">{{ form.username }}</div>
+          </div>
+          <div class="mb-4 row">
+            <label class="col-md-4">Email</label>
+            <div class="col-md-8">{{ form.email }}</div>
+          </div>
+          <div class="mb-4 row">
+            <label class="col-md-4">Date Joined</label>
+            <div class="col-md-8">{{ form.date_joined }}</div>
+          </div>
+          <div class="mb-4 row">
+            <label class="col-md-4">Password</label>
+            <div class="col-md-8">{{ form.password }}</div>
+          </div>
+          <div class="mb-4 row">
+            <label class="col-md-4">Is Police</label>
+            <div class="col-md-8">
+              <input type="checkbox" name="is_police" />
+            </div>
+          </div>
+        </div>
+        <div class="card-footer text-end">
+          <button type="submit" class="btn btn-success" id="submitButton">
+            <i class="fa fa-save"></i> Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+{% endblock %} {% block scripts %}
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("addUserForm");
+    const submitButton = document.getElementById("submitButton");
+
+    submitButton.addEventListener("click", function (event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+
+      form.classList.add("was-validated");
+    });
+  });
+</script>
+{% endblock %}
