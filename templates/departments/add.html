@@ -1,32 +1,37 @@
-{% extends 'shared/layout_core.html' %}
-
-{% block breadcrumb %} 
-    <a class="breadcrumb-item" href="{% url 'departments:index' %}">Students Departments</a>
-    <span class="breadcrumb-item active">Add New</span>
-{% endblock %}
-
-{% block actionbar %} 
-    <a class="btn btn-outline-secondary" href="{% url 'departments:index' %}"><i class="fa fa-arrow-left"></i> Back</a>
-{% endblock %}
-
-{% block main %} 
-    <div class="card">
-        <div class="card-header bg-primary text-white">
-            <h5 class="mb-0">Add New Department</h5>
-        </div>
+{% extends 'shared/layout_core.html' %} {% load static %} {% block breadcrumb %}
+<a class="breadcrumb-item" href="/departments/">Department</a>
+<a class="breadcrumb-item" href="">Add</a>
+{% endblock %} {% block main %}
+<div class="row">
+  <div class="col-md-9">
+    <form method="post" enctype="multipart/form-data">
+      {% csrf_token %}
+      <div class="card">
         <div class="card-body">
-            <form method="POST">
-                {% csrf_token %}
-                <div class="form-group">
-                    <label for="id_name">Department Name</label>
-                    {{ form.name }}
-                </div>
-                <div class="form-group">
-                    <label for="id_code">Department Code</label>
-                    {{ form.code }}
-                </div>
-                <button type="submit" class="btn btn-primary"><i class="fa fa-save"></i> Save</button>
-            </form>
+          <div class="mb-4 row">
+            <label class="col-md-4"
+              >Department name <span class="text-danger">*</span></label
+            >
+            <div class="col-md-8">{{ form.name }}</div>
+          </div>
+          {% if form.errors %}
+          <div class="alert alert-danger" role="alert">
+            Please correct the errors below:
+            <ul>
+              {% for field, errors in form.errors.items %} {% for error in errors %}
+              <li>{{ error }}</li>
+              {% endfor %} {% endfor %}
+            </ul>
+          </div>
+          {% endif %}
         </div>
-    </div>
+        <div class="card-footer text-end">
+          <button type="submit" class="btn btn-success">
+            <i class="fa fa-save"></i> Save
+          </button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
 {% endblock %}
