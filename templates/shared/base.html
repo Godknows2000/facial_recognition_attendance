@@ -37,7 +37,6 @@
                 background-color: transparent;
                 border: none;
             ">
-                  {% comment %} {% get_language_info for request.LANGUAGE_CODE as current_language_info %} {% endcomment %}
                   <img src="{% static 'flags/' %}{{ request.LANGUAGE_CODE }}.png" alt="{{ request.LANGUAGE_CODE }}" style="height:16px">
                 </button>
                 <div class="dropdown-menu bg-secondary" aria-labelledby="languageDropdown">
