@@ -29,7 +29,7 @@
                             <label class="col-md-4">Email <span class="text-danger">*</span></label>
                             <div class="col-md-8">{{ form.email }}</div>
                         </div>
-                        
+
                         <div class="mb-4 row">
                             <label class="col-md-4">Password <span class="text-danger">*</span></label>
                             <div class="col-md-8">{{ form.password }}</div>
@@ -52,12 +52,12 @@
                         </div>
 
                         <!-- Face Encoding (Non-editable) -->
-                        <div class="mb-4 row">
+                        {% comment %} <div class="mb-4 row">
                             <label class="col-md-4">Face Encoding (not editable)</label>
                             <div class="col-md-8">
                                 {{ form.face_encoding }} <!-- This will be hidden or auto-handled -->
                             </div>
-                        </div>
+                        </div> {% endcomment %}
 
                         {% if form.errors %}
                             <div class="alert alert-danger" role="alert">

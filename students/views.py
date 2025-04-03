@@ -58,7 +58,7 @@ def add_view(request):
             staff.user = user
             staff.save()
 
-            messages.success(request, "Staff member added successfully!")
+            messages.success(request, "Student member added successfully!")
             return redirect(details_view, id=staff.id)
         else:
             messages.error(request, "Please correct the errors below.")
