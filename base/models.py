@@ -34,11 +34,17 @@ class Student(models.Model):
     
 # Staff table (linked to User and Department)
 class Staff(models.Model):
+    ROLE_CHOICES = [
+        ('lecturer', 'Lecturer'),
+        ('admin', 'Admin'),
+        ('support', 'Support'),
+    ]
+        
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='staff')
     staff_id = models.CharField(max_length=50, unique=True)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
-    role = models.CharField(max_length=50, choices=[('lecturer', 'Lecturer'), ('admin', 'Admin'), ('support', 'Support')])
+    role = models.CharField(max_length=50, choices=ROLE_CHOICES)
     face_encoding = models.BinaryField()
     created_at = models.DateTimeField(auto_now_add=True)
 
