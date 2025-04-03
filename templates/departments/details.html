@@ -1,41 +1,47 @@
-{% extends 'shared/layout_core.html' %} {% load static %} {% block breadcrumb %}
-<a class="breadcrumb-item" href="/departments/">Departments</a>
-<a class="breadcrumb-item" href="#">{{form.id}}</a>
-{% endblock %} {% block sidebar %}
+{% extends 'shared/layout_core.html' %} 
+{% load static %} 
 
+{% block breadcrumb %}
+<a class="breadcrumb-item" href="/departments/">Departments</a>
+<a class="breadcrumb-item" href="#">{{ form.id }}</a>
+{% endblock %} 
+
+{% block sidebar %}
 <div class="list-group list-group-flush border-bottom scrollarea w-100">
   <a
     class="list-group-item list-group-item-light justify-content-between d-flex align-items-center list-group-item-action border-bottom"
-    href="../department/{{form.id}}"
+    href="../department/{{ form.id }}"
   >
     <div>Students</div>
     <i class="fa fa-money-bill-alt"></i>
   </a>
   <a
     class="list-group-item list-group-item-light justify-content-between d-flex align-items-center list-group-item-action border-bottom"
-    href="../department/{{department.id}}"
+    href="../department/{{ department.id }}"
   >
     <div>Add student</div>
     <i class="fa fa-money-bill-alt"></i>
   </a>
 </div>
+{% endblock %} 
 
-{% endblock %} {% block main_s %}
+{% block main_s %}
 <div class="card">
   <div class="card-body">
     <h5>Department information</h5>
     <hr />
     <div class="mb-4 row">
       <label class="col-md-4">Name</label>
-      <div class="col-md-8">{{department.name}}</div>
+      <div class="col-md-8">{{ department.name }}</div>
     </div>
     <div class="mb-4 row">
       <label class="col-md-4">Dept code</label>
-      <div class="col-md-8">{{department.code}}</div>
+      <div class="col-md-8">{{ department.code }}</div>
     </div>
     <div class="mb-4 row">
       <label class="col-md-4">Creation Date</label>
-      <div class="col-md-8">{{department.created_at}}</div>
+      <div class="col-md-8">{{ department.created_at }}</div>
     </div>
   </div>
 </div>
+{% endblock %}  <!-- Add this closing block -->
