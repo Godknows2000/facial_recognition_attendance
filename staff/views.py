@@ -70,16 +70,24 @@ def add_view(request):
 # 🔹 View staff details
 @login_required
 def details_view(request, id):
-    staff = get_object_or_404(Staff, id=id)
+    staff = Staff.objects.get(id = id)
     section.page_title = f"{staff.user.first_name} {staff.user.last_name}"
     section.sidebar = True
     section.actionbar = True
+    
+    # Count the total number of vehicles associated with the ministry
+    # total_students = Vehicle.objects.filter(ministry_name=id).count()
+    
+    # # Retrieve the list of vehicles associated with the ministry
+    # student_list = Vehicle.objects.filter(ministry_name=id)
 
     context = {
         'section': section,
         'query_string': "",
         'staff': staff,
+        # 'total_vehicles': total_vehicles, 
+        # 'vehicle_list': vehicle_list,    
         'user': request.user,
+        
     }
-    
     return render(request, 'staff/details.html', context)

@@ -1,11 +1,12 @@
 {% extends 'shared/layout_core.html' %}
+{% load static %} 
 
 {% block breadcrumb %}
 <a class="breadcrumb-item" href="/staff/">Staff</a>
 <a class="breadcrumb-item" href="#">{{ staff.user.first_name }} {{ staff.user.last_name }}</a>
 {% endblock %}
 
-{% block main %}
+{% block main_s %}
 <div class="card">
   <div class="card-body">
     <h5>Staff Details</h5>
