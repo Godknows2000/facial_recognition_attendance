@@ -1,6 +1,6 @@
 from django import forms
 from django.contrib.auth.models import User
-from .models import Staff, Department
+from base.models import Staff, Department
 
 class StaffForm(forms.ModelForm):
     username = forms.CharField(max_length=150, required=True)

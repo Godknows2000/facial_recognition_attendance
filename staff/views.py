@@ -1,43 +1,96 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib import messages
 from django.contrib.auth.models import User
-from .models import Staff
-from .forms import StaffForm
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from base.models import Staff
+from staff.forms import StaffForm
+from base.section import Section
+
+section = Section()
+section.actionbar = True
+section.breadcrumb = True
 
 # 🔹 List all staff members
-def staff_index(request):
-    staff_list = Staff.objects.select_related('user', 'department').all()
+@login_required
+def index_view(request):
+    section.page_title = "Staff Members"
+    section.sidebar = False
+    section.actionbar = True
+
+    my_list = Staff.objects.select_related('user', 'department').all().order_by('created_at')
     query_string = request.GET.get('query_string', '')
 
     if query_string:
-        staff_list = staff_list.filter(
+        my_list = my_list.filter(
             user__first_name__icontains=query_string
-        ) | staff_list.filter(
+        ) | my_list.filter(
             user__last_name__icontains=query_string
-        ) | staff_list.filter(
+        ) | my_list.filter(
             staff_id__icontains=query_string
         )
 
-    return render(request, 'staff/index.html', {'staff_list': staff_list, 'query_string': query_string})
+    context = {
+        'section': section,
+        'query_string': query_string,
+        'my_list': my_list,
+        'user': request.user,
+    }
+    
+    return render(request, 'staff/index.html', context)
 
 
 # 🔹 Add a new staff member
-def add_staff(request):
-    if request.method == "POST":
+@login_required
+def add_view(request):
+    section.page_title = "Add New Staff Member"
+    section.sidebar = False
+
+    form = StaffForm()
+
+    if request.method == 'POST':
         form = StaffForm(request.POST)
+
         if form.is_valid():
-            form.save()
+            user = User.objects.create_user(
+                username=form.cleaned_data['email'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+            )
+            
+            staff = form.save(commit=False)
+            staff.user = user
+            staff.save()
+
             messages.success(request, "Staff member added successfully!")
-            return redirect('staff_index')  # Redirect to staff list
+            return redirect(details_view, id=staff.id)
         else:
             messages.error(request, "Please correct the errors below.")
-    else:
-        form = StaffForm()
 
-    return render(request, 'staff/add.html', {'form': form})
+    context = {
+        'section': section,
+        'query_string': "",
+        'form': form,
+        'user': request.user,
+    }
+    
+    return render(request, 'staff/add.html', context)
 
 
 # 🔹 View staff details
-def staff_details(request, staff_id):
-    staff = get_object_or_404(Staff, staff_id=staff_id)
-    return render(request, 'staff/details.html', {'staff': staff})
+@login_required
+def details_view(request, id):
+    staff = get_object_or_404(Staff, id=id)
+    section.page_title = f"{staff.user.first_name} {staff.user.last_name}"
+    section.sidebar = True
+    section.actionbar = True
+
+    context = {
+        'section': section,
+        'query_string': "",
+        'staff': staff,
+        'user': request.user,
+    }
+    
+    return render(request, 'staff/details.html', context)

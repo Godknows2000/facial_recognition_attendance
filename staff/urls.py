@@ -1,8 +1,9 @@
-from django.urls import path
-from .views import staff_index, add_staff, staff_details
+from django.contrib import admin
+from django.urls import path, include
+from . import views
 
 urlpatterns = [
-    path('staff/', staff_index, name='staff_index'),
-    path('staff/add/', add_staff, name='add_staff'),
-    path('staff/details/<str:staff_id>/', staff_details, name='staff_details'),
+    path('', views.index_view),
+    path('add', views.add_view),
+    path('details/<id>', views.details_view)
 ]

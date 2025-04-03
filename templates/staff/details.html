@@ -1,0 +1,39 @@
+{% extends 'shared/layout_core.html' %}
+
+{% block breadcrumb %}
+<a class="breadcrumb-item" href="/staff/">Staff</a>
+<a class="breadcrumb-item" href="#">{{ staff.user.first_name }} {{ staff.user.last_name }}</a>
+{% endblock %}
+
+{% block main %}
+<div class="card">
+  <div class="card-body">
+    <h5>Staff Details</h5>
+    <hr />
+    <div class="mb-4 row">
+      <label class="col-md-4">Full Name</label>
+      <div class="col-md-8">{{ staff.user.first_name }} {{ staff.user.last_name }}</div>
+    </div>
+    <div class="mb-4 row">
+      <label class="col-md-4">Staff ID</label>
+      <div class="col-md-8">{{ staff.staff_id }}</div>
+    </div>
+    <div class="mb-4 row">
+      <label class="col-md-4">Email</label>
+      <div class="col-md-8">{{ staff.user.email }}</div>
+    </div>
+    <div class="mb-4 row">
+      <label class="col-md-4">Department</label>
+      <div class="col-md-8">{{ staff.department.name }}</div>
+    </div>
+    <div class="mb-4 row">
+      <label class="col-md-4">Role</label>
+      <div class="col-md-8">{{ staff.get_role_display }}</div>
+    </div>
+    <div class="mb-4 row">
+      <label class="col-md-4">Created At</label>
+      <div class="col-md-8">{{ staff.created_at }}</div>
+    </div>
+  </div>
+</div>
+{% endblock %}
