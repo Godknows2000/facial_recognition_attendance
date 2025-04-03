@@ -46,6 +46,7 @@ def add_view(request):
         form = StudentForm(request.POST)
 
         if form.is_valid():
+            # Create User first
             user = User.objects.create_user(
                 username=form.cleaned_data['email'],
                 email=form.cleaned_data['email'],
@@ -53,19 +54,25 @@ def add_view(request):
                 first_name=form.cleaned_data['first_name'],
                 last_name=form.cleaned_data['last_name'],
             )
-            
-            staff = form.save(commit=False)
-            staff.user = user
-            staff.save()
 
-            messages.success(request, "Student member added successfully!")
-            return redirect(details_view, id=staff.id)
+            # Create the student and link the user
+            student = form.save(commit=False)
+            student.user = user
+
+            # Set the face_encoding field (this could be set later with face recognition logic)
+            student.face_encoding = None  # You can set this to None or handle it with face recognition later
+
+            student.save()
+
+            # Success message
+            messages.success(request, "Student added successfully!")
+            return redirect('students:details', id=student.id)
         else:
+            # Error message if form is invalid
             messages.error(request, "Please correct the errors below.")
-
+    
     context = {
         'section': section,
-        'query_string': "",
         'form': form,
         'user': request.user,
     }
