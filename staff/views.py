@@ -17,27 +17,16 @@ def index_view(request):
     section.sidebar = False
     section.actionbar = True
 
-    my_list = Staff.objects.select_related('user', 'department').all().order_by('created_at')
-    query_string = request.GET.get('query_string', '')
-
-    if query_string:
-        my_list = my_list.filter(
-            user__first_name__icontains=query_string
-        ) | my_list.filter(
-            user__last_name__icontains=query_string
-        ) | my_list.filter(
-            staff_id__icontains=query_string
-        )
+    my_list = Staff.objects.all().order_by('created_at')
 
     context = {
         'section': section,
-        'query_string': query_string,
+        'query_string': "",
         'my_list': my_list,
         'user': request.user,
     }
     
     return render(request, 'staff/index.html', context)
-
 
 # 🔹 Add a new staff member
 @login_required
