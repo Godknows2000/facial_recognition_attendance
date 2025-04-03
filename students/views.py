@@ -1,16 +1,14 @@
 # students/views.py
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
-
+from django.contrib.auth.models import User
+from django.contrib import messages
 from base.models import Student
 
 from students.forms import StudentForm
 
 from base.section import Section
-
-# Instantiate the section object
 section = Section()
-
 section.actionbar = True
 section.breadcrumb = True
 
@@ -37,24 +35,37 @@ def index_view(request):
     return render(request, 'students/index.html', context)
 
 # Add View - Add a new student
+@login_required
 def add_view(request):
-    section.page_title = "Add new student"
+    section.page_title = "Add New Student"
     section.sidebar = False
-    
-    form = StudentForm()  # Initialize form
+
+    form = StudentForm()
 
     if request.method == 'POST':
         form = StudentForm(request.POST)
-        
+
         if form.is_valid():
-            student = form.save(commit=False)
-            student.save()
-            return redirect('students:details', id=student.id)
+            user = User.objects.create_user(
+                username=form.cleaned_data['email'],
+                email=form.cleaned_data['email'],
+                password=form.cleaned_data['password'],
+                first_name=form.cleaned_data['first_name'],
+                last_name=form.cleaned_data['last_name'],
+            )
+            
+            staff = form.save(commit=False)
+            staff.user = user
+            staff.save()
+
+            messages.success(request, "Staff member added successfully!")
+            return redirect(details_view, id=staff.id)
         else:
-            form = StudentForm()  # Re-initialize form if invalid
+            messages.error(request, "Please correct the errors below.")
 
     context = {
         'section': section,
+        'query_string': "",
         'form': form,
         'user': request.user,
     }

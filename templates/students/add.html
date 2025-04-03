@@ -16,11 +16,23 @@
 
                         <!-- Full Name -->
                         <div class="mb-4 row">
-                            <label class="col-md-4">Full Name <span class="text-danger">*</span></label>
-                            <div class="col-md-8">
-                                {{ form.user.first_name }}
-                                {{ form.user.last_name }}
-                            </div>
+                            <label class="col-md-4">First Name <span class="text-danger">*</span></label>
+                            <div class="col-md-8">{{ form.first_name }}</div>
+                        </div>
+
+                        <div class="mb-4 row">
+                            <label class="col-md-4">Last Name <span class="text-danger">*</span></label>
+                            <div class="col-md-8">{{ form.last_name }}</div>
+                        </div>
+
+                        <div class="mb-4 row">
+                            <label class="col-md-4">Email <span class="text-danger">*</span></label>
+                            <div class="col-md-8">{{ form.email }}</div>
+                        </div>
+                        
+                        <div class="mb-4 row">
+                            <label class="col-md-4">Password <span class="text-danger">*</span></label>
+                            <div class="col-md-8">{{ form.password }}</div>
                         </div>
 
                         <!-- Registration Number -->
