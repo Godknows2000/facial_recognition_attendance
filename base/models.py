@@ -23,7 +23,7 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student')
     reg_number = models.CharField(max_length=50, unique=True)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
-    face_encoding = models.BinaryField()  # Storing face recognition encoding
+    face_encoding = models.BinaryField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
