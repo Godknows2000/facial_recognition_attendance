@@ -79,7 +79,6 @@ def add_view(request):
     
     return render(request, 'students/add.html', context)
 
-# Details View - Show student details
 def details_view(request, id):
     student = Student.objects.get(id=id)
     section.page_title = f"{student.user.first_name} {student.user.last_name}"
