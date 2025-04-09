@@ -32,7 +32,6 @@ class Student(models.Model):
     def __str__(self):
         return f"{self.user.first_name} {self.user.last_name} - {self.reg_number}"
     
-# Staff table (linked to User and Department)
 class Staff(models.Model):
     ROLE_CHOICES = [
         ('lecturer', 'Lecturer'),
