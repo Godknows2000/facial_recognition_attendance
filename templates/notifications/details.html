@@ -1,0 +1,19 @@
+{% extends 'shared/layout_core.html' %}
+{% block breadcrumb %}
+<a class="breadcrumb-item" href="{% url 'notifications_index' %}">Notifications</a>
+<a class="breadcrumb-item active">Details</a>
+{% endblock %}
+
+{% block main %}
+<h4>{{ item.message }}</h4>
+
+<p><strong>Status:</strong> {{ item.status }}</p>
+<p><strong>Location:</strong> {{ item.location.name }}</p>
+<p><strong>Date Sent:</strong> {{ item.creation_date|date:"Y-m-d H:i" }}</p>
+
+{% if item.attachment_url %}
+<p><strong>Attachment:</strong> <a href="{{ item.attachment_url }}" target="_blank">View</a></p>
+{% endif %}
+
+<a href="{% url 'notifications_index' %}" class="btn btn-secondary">Back to List</a>
+{% endblock %}

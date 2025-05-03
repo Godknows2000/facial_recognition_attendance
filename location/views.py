@@ -1,25 +1,36 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from django.contrib.auth.decorators import login_required
-
-from core.models import Location
+from base.models import Location
 from base.section import Section
 
 section = Section()
-section.actionbar = True
 section.breadcrumb = True
+section.actionbar = True
 
-@login_required(login_url='/identity/login')
+@login_required
 def index_view(request):
-    section.page_title = ""
     section.title = "Locations"
-    section.sidebar=False
+    section.page_title = "Location List"
+    section.sidebar = False
 
-    mylist = Location.objects.all().order_by('name')
+    locations = Location.objects.all().order_by('-created_at')
 
     context = {
         'section': section,
-        'query_string': "",
-        'mylist': mylist,
-        
+        'mylist': locations,
     }
     return render(request, 'locations/index.html', context)
+
+@login_required
+def detail_view(request, id):
+    section.title = "Location Details"
+    section.page_title = "Location Info"
+    section.sidebar = False
+
+    location = get_object_or_404(Location, pk=id)
+
+    context = {
+        'section': section,
+        'item': location,
+    }
+    return render(request, 'locations/detail.html', context)

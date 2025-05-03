@@ -1,0 +1,55 @@
+{% extends 'shared/layout_core.html' %}
+
+{% block breadcrumb %}
+    <a class="breadcrumb-item" href="{% url 'attendance_logs' %}">Attendance Logs</a>
+{% endblock %}
+
+{% block main %} 
+<h5 class="mb-3"></h5>
+    <div class="row">
+        <div class="col-md-8"></div>
+            <div class="col-md-4 text-right">
+                <form method="GET" action="">           
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" name="query_string" placeholder="Search for department...">
+                        <div class="input-group-append">                          
+                            <button class="btn btn-outline-secondary" type="submit"><i class="fa fa-search"></i> Search</button>
+                        </div>
+                    </div>
+                </form>
+        </div>
+    </div>
+        
+    {% if query_string %}
+    <div class="row">
+        <p><i class="fa fa-search"></i> You searched for "<b>{{ query_string }}</b>" <a asp-page="index" class="btn btn-outline-secondary btn-sm">Clear search</a></p>
+    </div>
+    {% endif %}
+
+    <h5 class="font-weight-light"><strong>{{my_list.count}}</strong> Recent Attendance Log{% if my_list.count != 1 %}s{% endif %}</h4>
+    <table class="table table-striped table-hover table-sm border-bottom border-top">
+        
+        <tbody>
+            <tr>
+                <th>User</th>
+                <th>Detected At</th>
+                <th>Confidence</th>
+                <th>IP Address</th>
+                <th>Browser Info</th>
+                <th>Actions</th>
+            </tr>
+            {% for log in logs %}
+            <tr>
+                <td>{{ log.user.get_full_name }}</td>
+                <td>{{ log.detected_at }}</td>
+                <td>{{ log.confidence|floatformat:2 }}%</td>
+                <td>{{ log.ip_address }}</td>
+                <td>{{ log.browser_info|truncatewords:5 }}</td>
+                <td><a href="{% url 'attendance_log_detail' log.pk %}">Details</a></td>
+            </tr>
+            {% empty %}
+            <tr><td colspan="6" class="text-center">No logs available.</td></tr>
+            {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

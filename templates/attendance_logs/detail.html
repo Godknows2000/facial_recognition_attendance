@@ -1,0 +1,27 @@
+{% extends 'shared/layout_core.html' %}
+
+{% block breadcrumb %}
+    <a class="breadcrumb-item" href="{% url 'attendance_logs' %}">Attendance Logs</a>
+    <a class="breadcrumb-item active" href="#">Detail</a>
+{% endblock %}
+
+{% block main %}
+    <h5>Attendance Log Detail</h5>
+
+    <table class="table">
+        <tr><th>User:</th><td>{{ log.user.get_full_name }}</td></tr>
+        <tr><th>Detected At:</th><td>{{ log.detected_at }}</td></tr>
+        <tr><th>Confidence:</th><td>{{ log.confidence|floatformat:2 }}%</td></tr>
+        <tr><th>IP Address:</th><td>{{ log.ip_address }}</td></tr>
+        <tr><th>Browser Info:</th><td>{{ log.browser_info }}</td></tr>
+        <tr><th>Captured Image:</th>
+            <td>
+                {% if log.image_path %}
+                    <img src="{{ log.image_path }}" class="img-thumbnail" style="max-width: 200px;" />
+                {% else %}
+                    <em>No image available</em>
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+{% endblock %}
