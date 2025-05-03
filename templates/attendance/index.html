@@ -1,0 +1,120 @@
+{% extends 'shared/layout_core.html' %}
+
+{% block breadcrumb %} 
+    <a class="breadcrumb-item" href="#">Attendance</a>
+{% endblock %}
+
+{% block actionbar %} 
+    <div class="dropdown d-inline-block">
+        <button class="btn btn-outline-primary dropdown-toggle" type="button" data-toggle="dropdown">
+            <i class="fa fa-calendar"></i> Select Period
+        </button>
+        <div class="dropdown-menu">
+            <a class="dropdown-item" href="#">Today</a>
+            <a class="dropdown-item" href="#">This Week</a>
+            <a class="dropdown-item" href="#">Last 2 Weeks</a>
+            <a class="dropdown-item" href="#">This Month</a>
+        </div>
+    </div>
+{% endblock %}
+
+{% block main %}
+    <style>
+        .chart-container {
+            margin-top: 30px;
+        }
+        #lineChart, #pieChart {
+            min-height: 350px;
+        }
+        .calendar-box {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 10px;
+            margin-top: 40px;
+        }
+        .calendar-day {
+            padding: 10px;
+            border-radius: 6px;
+            background-color: #f0f4f7;
+            text-align: center;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+    </style>
+
+    <h5 class="font-weight-light">Attendance Overview</h5>
+
+    <div class="row">
+        <div class="col-md-8">
+            <div class="chart-container">
+                <div id="lineChart"></div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="chart-container">
+                <div id="pieChart"></div>
+            </div>
+        </div>
+    </div>    
+
+    <h6 class="mt-4">Calendar Attendance</h6>
+    <div class="calendar-box">
+        {% for date, count in calendar_data.items %}
+            <div class="calendar-day">
+                <strong>{{ date }}</strong><br/>
+                {{ count }} students
+            </div>
+        {% endfor %}
+    </div>
+
+    <!-- ApexCharts CDN -->
+    <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            var deptLineSeries = [
+                {% for dept, values in dept_line_data.items %}
+                {
+                    name: "{{ dept }}",
+                    data: [{{ values|join:", " }}]
+                },
+                {% endfor %}
+            ];
+
+            var lineDates = {{ line_dates|safe }};
+            var pieLabels = {{ pie_labels|safe }};
+            var pieData = {{ pie_values|safe }};
+
+            // Line chart
+            new ApexCharts(document.querySelector("#lineChart"), {
+                chart: {
+                    type: 'line',
+                    height: 350
+                },
+                series: deptLineSeries,
+                xaxis: {
+                    categories: lineDates,
+                    title: {
+                        text: 'Date'
+                    }
+                },
+                yaxis: {
+                    title: {
+                        text: 'Students Present'
+                    }
+                },
+                colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560']
+            }).render();
+
+            // Pie chart
+            new ApexCharts(document.querySelector("#pieChart"), {
+                chart: {
+                    type: 'pie',
+                    height: 350
+                },
+                series: pieData,
+                labels: pieLabels,
+                colors: ['#008FFB', '#00E396', '#FEB019', '#FF4560']
+            }).render();
+        });
+    </script>
+{% endblock %}

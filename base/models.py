@@ -1,3 +1,4 @@
+from django.utils import timezone
 from django.contrib.auth.models import User
 from django.db import models
 import uuid
@@ -59,7 +60,7 @@ class Location(models.Model):
     name = models.CharField(max_length=255)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
-    is_out_of_bound = models.BooleanField()
+    is_out_of_bound = models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -125,9 +126,9 @@ class Notification(models.Model):
     message = models.TextField()
     sent_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=[('sent', 'Sent'), ('read', 'Read')], default='sent')
-    attachment_url = models.TextField(null=True, blank=True)
-    location = models.ForeignKey(Location, on_delete=models.CASCADE)
-    creation_date = models.DateTimeField(auto_now_add=True)
+    attachment_url = models.TextField(null=True, blank=True, default="")  # Default to empty string
+    location = models.ForeignKey(Location, on_delete=models.CASCADE, default=None)
+    creation_date = models.DateTimeField(default=timezone.now)
     
     class Meta:
         db_table = 'notifications'

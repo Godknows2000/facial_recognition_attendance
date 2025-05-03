@@ -1,0 +1,29 @@
+{% block content %}
+<div class="container mt-4">
+    <h3>Attendance - {{ period }}</h3>
+    {% if records %}
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Date</th>
+                    <th>Time In</th>
+                    <th>Time Out</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for record in records %}
+                <tr>
+                    <td>{{ record.date }}</td>
+                    <td>{{ record.time_in }}</td>
+                    <td>{{ record.time_out|default:"--" }}</td>
+                    <td>{{ record.status|title }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p>No attendance records found for this period.</p>
+    {% endif %}
+</div>
+{% endblock %}
