@@ -1,10 +1,10 @@
 from django import forms
-from .models import User
+from base.models import Attendance
 
-class UserForm(forms.ModelForm):
+class AttendanceForm(forms.ModelForm):
     class Meta:
-        model = User
-        fields = ['username', 'email', 'user_type', 'password']
+        model = Attendance
+        fields = ['status']
         widgets = {
-            'password': forms.PasswordInput(),
+            'status': forms.Select(attrs={'class': 'form-control'}),
         }

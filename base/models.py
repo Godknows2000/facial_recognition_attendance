@@ -59,6 +59,7 @@ class Location(models.Model):
     name = models.CharField(max_length=255)
     latitude = models.DecimalField(max_digits=10, decimal_places=7)
     longitude = models.DecimalField(max_digits=10, decimal_places=7)
+    is_out_of_bound = models.BooleanField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -67,6 +68,17 @@ class Location(models.Model):
     def __str__(self):
         return self.name
     
+class Camera(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    name = models.CharField(max_length=128)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        db_table = 'Camera'
+        
 # Attendance table (logs when students/staff check in/out)
 class Attendance(models.Model):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
@@ -113,9 +125,13 @@ class Notification(models.Model):
     message = models.TextField()
     sent_at = models.DateTimeField(auto_now_add=True)
     status = models.CharField(max_length=20, choices=[('sent', 'Sent'), ('read', 'Read')], default='sent')
-
+    attachment_url = models.TextField(null=True, blank=True)
+    location = models.ForeignKey(Location, on_delete=models.CASCADE)
+    creation_date = models.DateTimeField(auto_now_add=True)
+    
     class Meta:
         db_table = 'notifications'
 
     def __str__(self):
         return f"Notification to {self.user.first_name} {self.user.last_name}"
+    
