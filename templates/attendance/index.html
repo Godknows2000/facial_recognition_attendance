@@ -41,20 +41,24 @@
         }
     </style>
 
-    <h5 class="font-weight-light">Attendance Overview</h5>
-
-    <div class="row">
+    <div class="row mt-4">
         <div class="col-md-8">
-            <div class="chart-container">
-                <div id="lineChart"></div>
+            <div class="card shadow-sm mb-4">
+                <strong class="text-center mt-1">Attendance by Department</strong>
+                <div class="card-body">
+                    <div id="lineChart" style="height: 350px;"></div>
+                </div>
             </div>
         </div>
         <div class="col-md-4">
-            <div class="chart-container">
-                <div id="pieChart"></div>
+            <div class="card shadow-sm mb-4">
+                <strong class="text-center mt-2">Attendance by Department</strong>
+                <div class="card-body">
+                    <div id="pieChart" style="height: 350px;"></div>
+                </div>
             </div>
         </div>
-    </div>    
+    </div>      
 
     <h6 class="mt-4">Calendar Attendance</h6>
     <div class="calendar-box">
