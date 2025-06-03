@@ -1,7 +1,10 @@
-from django.utils import timezone
+from django.utils.timezone import now
 from django.contrib.auth.models import User
 from django.db import models
 import uuid
+import datetime
+from django.contrib.postgres.fields import JSONField
+from django.utils import timezone
 
 # Create your models here.
 
@@ -24,7 +27,6 @@ class Student(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE, related_name='student')
     reg_number = models.CharField(max_length=50, unique=True)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
-    face_encoding = models.BinaryField(null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -45,7 +47,6 @@ class Staff(models.Model):
     staff_id = models.CharField(max_length=50, unique=True)
     department = models.ForeignKey(Department, on_delete=models.SET_NULL, null=True)
     role = models.CharField(max_length=50, choices=ROLE_CHOICES)
-    face_encoding = models.BinaryField()
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -111,6 +112,7 @@ class AttendanceLog(models.Model):
     # Web-based tracking fields
     ip_address = models.GenericIPAddressField(null=True, blank=True)
     browser_info = models.TextField(null=True, blank=True)
+    metadata = JSONField(null=True, blank=True)
     
     class Meta:
         db_table = 'attendance_logs'
@@ -135,4 +137,24 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"Notification to {self.user.first_name} {self.user.last_name}"
+
+class Present(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    attendance = models.ForeignKey('Attendance', on_delete=models.CASCADE, related_name='present_entries')
+    date = models.DateField(default=datetime.date.today)
+    present = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date} - {'Present' if self.present else 'Absent'}"
+	
+class Time(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    attendance = models.ForeignKey('Attendance', on_delete=models.CASCADE, related_name='time_entries', null=True, blank=True)
+    date = models.DateField(default=now)
+    time = models.DateTimeField(default=now, null=True, blank=True)
+    out = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.user.username} - {self.date} - {'OUT' if self.out else 'IN'} at {self.time}"
+
     

@@ -1,17 +1,51 @@
 {% extends 'shared/base.html' %}
- {% load static %}
- {% block content %}
- <header class="masthead" style="background-image: url('{% static 'img/facial-bg-4.png' %}' );">
-   <div class="intro-body">
-       <div class="container">
-           <div class="row">
-               <div class="col-lg-8 mx-auto">
-                   <h3 class="brand-heading">Facial Attendance Software</h3>
-                   <p class="intro-text">Efficient Recognition, Seamless Recognition: Your Gateway to With Smooth Facial Attendance Recognition.</p>
-                   <a class="btn btn-link btn-circle" role="button" href="#about"><i class="fa fa-angle-double-down animated"></i></a>
-               </div>
-           </div>
-       </div>
-     </div>
- </header>
- {% endblock %}
+{% load static %}
+
+{% block content %}
+<header class="masthead" style="background-image: url('{% static 'img/facial-bg-4.png' %}');">
+  <div class="intro-body">
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 mx-auto text-center">
+          <h3 class="brand-heading">Facial Attendance Software</h3>
+          <p class="intro-text">
+            Efficient Recognition, Seamless Recognition: Your Gateway to With Smooth Facial Attendance Recognition.
+          </p>
+          <a class="btn btn-link btn-circle" role="button" href="#options"><i class="fa fa-angle-double-down animated"></i></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<section id="options" class="py-5 border-bottom" style="background: #2c3d90">
+  <div class="container">
+    <h3 class="text-center mb-5">PLEASE SELECT YOUR OPTION</h3>
+    <div class="row justify-content-center text-center">
+
+      <!-- Attendance In -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <i class="fas fa-user-check fa-3x mb-3 text-primary"></i>
+            <h5 class="card-title text-primary">Mark Your Attendance-In</h5>
+            <a href="{%url "mark-your-attendance" %}" class="btn btn-outline-primary mt-3">Let's Go</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Attendance Out -->
+      <div class="col-md-4 mb-4">
+        <div class="card h-100 shadow-sm">
+          <div class="card-body">
+            <i class="fas fa-user-clock fa-3x mb-3 text-success"></i>
+            <h5 class="card-title text-primary">Mark Attendance-Out</h5>
+            <a href="{%url "mark-your-attendance-out" %}" class="btn btn-outline-success mt-3">Let's Go</a>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+{% endblock %}
