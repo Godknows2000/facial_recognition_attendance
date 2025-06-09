@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django.db import models
 import uuid
 import datetime
-from django.contrib.postgres.fields import JSONField
+from django.db.models import JSONField
 from django.utils import timezone
 
 # Create your models here.

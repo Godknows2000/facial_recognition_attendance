@@ -4,11 +4,13 @@ from django.contrib.auth import views as auth_views
 
 from recognition import views as recog_views
 from users import views as users_views
+from base import views as base_views
 
 urlpatterns = [
     # Admin
     path('admin/', admin.site.urls),
     path('', include('base.urls')),
+    path('', base_views.index_view, name='index'),
     # Core app modules
     path('departments/', include('departments.urls')),
     path('students/', include('students.urls')),

@@ -36,10 +36,10 @@
     <hr class="my-2">
 
     <!-- Newly Added Section -->
-    <li><a href="{% url 'register' %}" class="sidebar-link"><i class="mdi mdi-grid-large text-muted"></i> Register New</a></li>
-    <li><a href="{% url 'add-photos' %}" class="sidebar-link"><i class="mdi mdi-floor-plan text-muted"></i> Add Photo</a></li>
-    <li><a href="{% url 'train' %}" class="sidebar-link"><i class="mdi mdi-card-text-outline text-muted"></i> Train Model</a></li>
-    <li><a href="{% url 'view-attendance-home' %}" class="sidebar-link"><i class="mdi mdi-account-circle-outline text-muted"></i> View Attendance</a></li>
+    {% comment %} <li><a href="{% url 'register' %}" class="sidebar-link"><i class="mdi mdi-grid-large text-muted"></i> Register New</a></li>
+    <li><a href="{% url 'add-photos' %}" class="sidebar-link"><i class="mdi mdi-floor-plan text-muted"></i> Add Photo</a></li> {% endcomment %}
+    <li><a href="{% url 'train' %}" class="sidebar-link"><i class="fa fa-cogs text-muted"></i> Train Model</a></li>
+    {% comment %} <li><a href="{% url 'view-attendance-home' %}" class="sidebar-link"><i class="mdi mdi-account-circle-outline text-muted"></i> View Attendance</a></li> {% endcomment %}
 
     <a href="/recognition/scan" class="btn btn-success ms-2 mt-4" target="_blank">
         <i class="fa fa-video-camera"></i> Launch Facial Recognition

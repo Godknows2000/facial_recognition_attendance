@@ -24,7 +24,7 @@
             margin-top: 30px;
         }
         #lineChart, #pieChart {
-            min-height: 350px;
+            min-height: 150px;
         }
         .calendar-box {
             display: grid;
@@ -46,7 +46,7 @@
             <div class="card shadow-sm mb-4">
                 <strong class="text-center mt-1">Attendance by Department</strong>
                 <div class="card-body">
-                    <div id="lineChart" style="height: 350px;"></div>
+                    <div id="lineChart" style="height: 250px;"></div>
                 </div>
             </div>
         </div>
@@ -54,24 +54,40 @@
             <div class="card shadow-sm mb-4">
                 <strong class="text-center mt-2">Attendance by Department</strong>
                 <div class="card-body">
-                    <div id="pieChart" style="height: 350px;"></div>
+                    <div id="pieChart" style="height: 250px;"></div>
                 </div>
             </div>
         </div>
     </div>      
 
     <h6 class="mt-4">Calendar Attendance</h6>
-    <div class="calendar-box">
-        {% for date, count in calendar_data.items %}
-            <div class="calendar-day">
-                <strong>{{ date }}</strong><br/>
-                {{ count }} students
-            </div>
-        {% endfor %}
-    </div>
+    <div id="calendar"></div>
 
     <!-- ApexCharts CDN -->
     <script src="https://cdn.jsdelivr.net/npm/apexcharts"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const calendarEl = document.getElementById('calendar');
+
+            const calendar = new FullCalendar.Calendar(calendarEl, {
+                initialView: 'dayGridMonth',
+                height: 700,
+                events: [
+                    {% for date, count in calendar_data.items %}
+                    {
+                        title: '{{ count }} present',
+                        start: '{{ date }}',
+                        allDay: true,
+                        color: '#28a745'  // Optional: green for present
+                    },
+                    {% endfor %}
+                ]
+            });
+
+            calendar.render();
+        });
+    </script>
 
     <script>
         document.addEventListener('DOMContentLoaded', function () {

@@ -169,55 +169,45 @@ def vizualize_Data(embedded, targets, ):
     plt.close()
 
 
-def update_attendance_in_db_in(present):
+def update_attendance_in_db_in(present, request):
     today = datetime.date.today()
     current_time = now()
-
     for username, is_present in present.items():
         if not is_present:
             continue
-
         try:
             user = User.objects.get(username=username)
         except User.DoesNotExist:
+            print(f"User {username} not found in database")
+            messages.error(request, f"User {username} not found. Attendance not recorded.")
             continue
-
-        # Save/Update Present
         try:
-            present_record = Present.objects.get(user=user, date=today)
-        except Present.DoesNotExist:
-            present_record = Present(user=user, date=today)
-        present_record.present = True
-        present_record.save()
-
-        # Save Time IN
-        time_record = Time(user=user, date=today, time=current_time, out=False)
-        time_record.save()
-
-        # Save/Update Attendance
-        attendance, created = Attendance.objects.get_or_create(
-            user=user,
-            date=today,
-            defaults={'status': 'present', 'time_in': current_time}
-        )
-        if not created:
-            if attendance.time_in is None:
-                attendance.time_in = current_time
-            attendance.status = 'present'
-            attendance.save()
-
-        # Save Attendance Log
-        log = AttendanceLog(
-            user=user,
-            detected_at=current_time,
-            confidence=0.99,
-            image_path='',
-            ip_address='127.0.0.1',
-            browser_info='Face Scanner',
-            attendance=attendance
-        )
-        log.save()
-
+            attendance, created = Attendance.objects.get_or_create(
+                user=user,
+                date=today,
+                defaults={'status': 'present', 'time_in': current_time}
+            )
+            if not created:
+                if attendance.time_in is None:
+                    attendance.time_in = current_time
+                attendance.status = 'present'
+                attendance.save()
+            present_record, _ = Present.objects.get_or_create(user=user, date=today, attendance=attendance)
+            present_record.present = True
+            present_record.save()
+            Time.objects.create(user=user, date=today, time=current_time, out=False, attendance=attendance)
+            AttendanceLog.objects.create(
+                user=user,
+                detected_at=current_time,
+                confidence=0.99,
+                image_path='',
+                ip_address='127.0.0.1',
+                browser_info='Face Scanner',
+                metadata={'action': 'check-in'},
+            )
+        except Exception as e:
+            print(f"Error saving attendance for {username}: {e}")
+            messages.error(request, f"Failed to record attendance for {username}: {str(e)}")
 
 def update_attendance_in_db_out(present):
     today = datetime.date.today()
@@ -232,35 +222,32 @@ def update_attendance_in_db_out(present):
         except User.DoesNotExist:
             continue
 
-        # Save Time OUT
-        time_record = Time(user=user, date=today, time=current_time, out=True)
-        time_record.save()
-
         # Update Attendance
         try:
             attendance = Attendance.objects.get(user=user, date=today)
             attendance.time_out = current_time
             attendance.save()
         except Attendance.DoesNotExist:
-            attendance = Attendance(
+            attendance = Attendance.objects.create(
                 user=user,
                 date=today,
                 time_out=current_time,
                 status='present'
             )
-            attendance.save()
 
-        # Save Attendance Log
-        log = AttendanceLog(
+        # Save time OUT
+        Time.objects.create(user=user, date=today, time=current_time, out=True, attendance=attendance)
+
+        # Save attendance log
+        AttendanceLog.objects.create(
             user=user,
             detected_at=current_time,
             confidence=0.99,
             image_path='',
             ip_address='127.0.0.1',
             browser_info='Face Scanner',
-            attendance=attendance
+            metadata={'action': 'check-out'},
         )
-        log.save()
 
 def check_validity_times(times_all):
     if (len(times_all) > 0):
@@ -535,7 +522,7 @@ def home(request):
 def dashboard(request):
     if (request.user.username == 'admin'):
         print("admin")
-        return render(request, 'recognition/admin_dashboard.html')
+        return render(request, 'index.html')
     else:
         print("not admin")
 
@@ -556,7 +543,7 @@ def add_photos(request):
             return redirect('add-photos')
         else:
             messages.warning(request, f'No such username found. Please register employee first.')
-            return redirect('dashboard')
+            return redirect('index.html')
 
 
     else:
@@ -650,13 +637,13 @@ def mark_your_attendance(request):
 
                 # Display the image in a window for 10 seconds
                 cv2.imshow("Face Detected", background_image)
-                update_attendance_in_db_in(present)
+                update_attendance_in_db_in(present, request)
                 cv2.waitKey(5000)
                 cv2.destroyWindow("Face Detected")
 
                 vs.stop()  # Stop the video stream
                 cv2.destroyAllWindows()  # Close all windows
-                return redirect('home')  # Redirect to the desired page after detecting a face
+                return redirect('index')  # Redirect to the desired page after detecting a face
 
                 
                 #break  # Exit the for loop after detecting a face
@@ -686,8 +673,8 @@ def mark_your_attendance(request):
 
     # destroying all the windows
     cv2.destroyAllWindows()
-    update_attendance_in_db_in(present)
-    return redirect('index.html')
+    update_attendance_in_db_in(present, request)
+    return redirect('index')
 
 def mark_your_attendance_out(request):
     detector = dlib.get_frontal_face_detector()
@@ -790,7 +777,7 @@ def mark_your_attendance_out(request):
 
                 vs.stop()  # Stop the video stream
                 cv2.destroyAllWindows()  # Close all windows
-                return redirect('home')  # Redirect to the desired page after detecting a face
+                return redirect('index')  # Redirect to the desired page after detecting a face
 
 
             else:
@@ -808,11 +795,12 @@ def mark_your_attendance_out(request):
     # Destroying all the windows
     cv2.destroyAllWindows()
     update_attendance_in_db_out(present)
-    return redirect('home')
+    return redirect('index')
 
 @login_required
 def train(request):
-    if request.user.username != 'admin':
+    if request.user.is_superuser is False:
+        messages.error(request, f'You are not authorised to access this page.')
         return redirect('not-authorised')
 
     training_dir = 'face_recognition_data/training_dataset'
@@ -1010,4 +998,4 @@ def view_my_attendance_employee_login(request):
 
 @login_required
 def logout(request):
-    return redirect('home')
+    return redirect('index')
