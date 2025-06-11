@@ -165,7 +165,7 @@ def vizualize_Data(embedded, targets, ):
     plt.legend(bbox_to_anchor=(1, 1));
     rcParams.update({'figure.autolayout': True})
     plt.tight_layout()
-    plt.savefig('./recognition/static/recognition/img/training_visualisation.png')
+    plt.savefig('./static/img/training_visualisation.png')
     plt.close()
 
 
