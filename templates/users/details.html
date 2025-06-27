@@ -1,22 +1,26 @@
-{% extends 'shared/layout_core.html' %} {% load static %} {% block breadcrumb %}
+{% extends 'shared/layout_core.html' %}
+{% load static %}
+{% block breadcrumb %}
 <a class="breadcrumb-item" href="/departments/">Users</a>
-<a class="breadcrumb-item" href="#">{{user.id}}</a>
-{% endblock %} {% block sidebar %} {% endblock %} {% block main_s %}
+<a class="breadcrumb-item" href="#">{{ selected_user.id }}</a>
+{% endblock %}
+{% block sidebar %} {% endblock %}
+{% block main_s %}
 <div class="card">
   <div class="card-body">
-    <h5>Users information</h5>
+    <h5>User Information</h5>
     <hr />
     <div class="mb-4 row">
       <label class="col-md-4">Username</label>
-      <div class="col-md-8">{{user.username}}</div>
+      <div class="col-md-8">{{ selected_user.username }}</div>
     </div>
     <div class="mb-4 row">
       <label class="col-md-4">Email</label>
-      <div class="col-md-8">{{user.email}}</div>
+      <div class="col-md-8">{{ selected_user.email }}</div>
     </div>
     <div class="mb-4 row">
       <label class="col-md-4">Last login</label>
-      <div class="col-md-8">{{user.last_login}}</div>
+      <div class="col-md-8">{{ selected_user.last_login }}</div>
     </div>
   </div>
 </div>

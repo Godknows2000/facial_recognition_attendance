@@ -55,17 +55,17 @@ def add_view(request):
     return render(request, 'users/add.html', context)
 
 def details_view(request, id):
-    user = User.objects.get(id = id)
+    # user = User.objects.get(id = id)
+    selected_user = User.objects.get(id=id)
 
-    section.page_title = user.username
+    section.page_title = selected_user.username
     section.sidebar = True
     section.actionbar = True
 
     context = {
         'section': section,
-        'query_string': "",
-        'user': user,       
+        'query_string': "",     
         'user': request.user,
-        
+        'selected_user': selected_user,
     }
     return render(request, 'users/details.html', context)
